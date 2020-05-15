@@ -1,0 +1,45 @@
+#!/bin/bash
+read -p "enter the team member size " ts
+read -p "enter the Floor Looking for " f
+i=0
+while read line
+do
+        arr[$i]="$line"
+        i=$((i+1))
+done < room.txt
+echo "Number of records are $i"
+
+
+for (( c=0; c<$i; c++ ))
+do
+   echo "${arr[$c]}"
+   com="${arr[$c]//[^,]}"
+   dash=${#com}
+   echo "total , in the variable is $dash"
+   IFS=','
+   read -a str<<<"${arr[$c]}"
+   echo "Floor & Room Number is - ${str[0]}"
+   echo "Availble Room Size  - ${str[1]}"
+   IFS='.'
+   read -a str1<<<"${str[1]}"
+   echo "Floor Number : ${str1[0]}"
+   #echo "Room Number : ${str1[1]}"
+   if test $f -eq ${str1[0]}
+   then
+    echo "This floor Is Available --- Hurray ----"
+   else
+    echo "No Its not your floor"
+   fi
+
+   if test $ts -lt ${str[1]}
+   then
+    echo "This Room Is Available --- Hurray ----"
+   else
+    echo "No Its Not"
+   fi
+   for (( k=2; k<$dash; k=k+2 ))
+   do
+     n=k+1
+     echo "Avalible time slots ${str[$k]} ---- ${str[$n]}"
+   done
+   echo "--------------------------------------------------------------"
